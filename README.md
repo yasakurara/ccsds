@@ -1,5 +1,7 @@
 # ccsds
-CCSDS(The Consultative Committee for Space Data Systems) SDKs
+This is my side project to realize CCSDS(The Consultative Committee for Space Data Systems) SDKs.
+Today, there are no useful SDKs to encode/decode CCSDS bit stream, so I want to create the one.
+
 
 # How to build
 ```

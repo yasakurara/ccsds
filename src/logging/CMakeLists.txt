@@ -1,0 +1,1 @@
+add_library(logging OBJECT Logging.cpp)
