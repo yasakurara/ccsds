@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StringFormat.hpp"
+#include "logging/StringFormat.hpp"
 
 #include <string>
 #include <mutex>
