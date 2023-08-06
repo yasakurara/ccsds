@@ -7,6 +7,7 @@ add_executable(
 target_link_libraries(
   ccsds_test
   GTest::gtest_main
+  ccsds
 )
 
 include(GoogleTest)
