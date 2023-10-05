@@ -69,6 +69,7 @@ int TMSender::GetChannelBytes(uint8_t* buf, const int bufLen)
     uint16_t len = std::min(bufLen, remain);
     try {
         std::memcpy(buf, m_CADU + m_channelBytesSeek, len);
+        m_channelBytesSeek += len;
     } catch (...) {
         LOG_CRITICAL("Failed to set m_CADU");
         return -1;
