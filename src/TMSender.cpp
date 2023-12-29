@@ -8,9 +8,9 @@ TMSender::TMSender()
 
 TMSender::~TMSender()
 {
-    if (m_transferFrame) delete m_transferFrame;
-    if (m_CADU) delete m_CADU;
-    if (m_channelBytes) delete m_channelBytes;
+    if (m_transferFrame) delete[] m_transferFrame;
+    if (m_CADU) delete[] m_CADU;
+    if (m_channelBytes) delete[] m_channelBytes;
 }
 
 int TMSender::SetTransferFrame(const uint8_t* data, const int dataLen)
