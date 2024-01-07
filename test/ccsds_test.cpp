@@ -51,11 +51,28 @@ TEST(ConvolutionalEncoderTest, Encode) {
   rc = ce.DoEncode();
   EXPECT_EQ(rc, 0);
 
-  uint8_t channelBytes[8] = {};
-  uint8_t expectedBytes[8] = {0x03, 0x5d, 0x49, 0xc2, 0x4f, 0xf2, 0x68, 0x6b};
+  uint8_t channelBytes[10] = {};
+  uint8_t expectedBytes[10] = {0x03, 0x5d, 0x49, 0xc2, 0x4f, 0xf2, 0x68, 0x6b, 0x17, 0x70};
   rc = ce.GetChannelBytes(channelBytes, sizeof(channelBytes));
   EXPECT_EQ(rc, sizeof(expectedBytes));
 
   auto cmp = [](uint8_t *a, uint8_t *b, int len) -> int { return std::memcmp(a, b, len); };
   EXPECT_EQ(cmp(channelBytes, expectedBytes, sizeof(channelBytes)), 0);
+}
+
+#include "ViterbiDecoder.hpp"
+
+TEST(ViterbiDecoderTest, Decode) {
+  ViterbiDecoder vd;
+  uint8_t data[10] = {0x03, 0x5d, 0x49, 0xc2, 0x4f, 0xf2, 0x68, 0x6b, 0x17, 0x70};
+  int rc = vd.DoDecode(data, (4*8+6)*2);
+  EXPECT_EQ(rc, 0);
+
+  uint8_t channelBytes[4] = {};
+  uint8_t expectedBytes[4] = {0x1a, 0xcf, 0xfc, 0x1d};
+  rc = vd.GetChannelBytes(channelBytes, sizeof(channelBytes));
+  EXPECT_EQ(rc, sizeof(expectedBytes));
+
+  auto cmp = [](uint8_t *a, uint8_t *b, int len) -> int { return std::memcmp(a, b, len); };
+  EXPECT_EQ(cmp(channelBytes, expectedBytes, sizeof(channelBytes)), 0); 
 }

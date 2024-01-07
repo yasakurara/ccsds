@@ -1,6 +1,8 @@
 #include "ConvolutionalEncoder.hpp"
 #include "logging/Logging.hpp"
 #include "utils.hpp"
+#include <sstream>
+#include <iomanip>
 
 ConvolutionalEncoder::ConvolutionalEncoder()
 {
@@ -29,7 +31,7 @@ int ConvolutionalEncoder::SetTransferFrame(const uint8_t* data, const int dataLe
         m_symbolsLen = (8*dataLen+6)*2;
         m_symbols = new uint8_t[m_symbolsLen];
         
-        m_channelBytesLen = dataLen*2;
+        m_channelBytesLen = dataLen*2+2;
         m_channelBytes = new uint8_t[m_channelBytesLen];
     } catch (...) {
         LOG_CRITICAL("Failed to set m_transferFrame");
@@ -55,20 +57,25 @@ int ConvolutionalEncoder::DoEncode()
             m_symbols[2*(i*8+bit)+1] = parity(buf & POLY_G2)*255;
         }
     }
+
+    // make the register 000000 forcibly
     for (int bit=0; bit<6; bit++) {
         buf = buf << 1;
         m_symbols[2*(m_transferFrameLen*8+bit)+0] = parity(buf & POLY_G1)*255;
         m_symbols[2*(m_transferFrameLen*8+bit)+1] = parity(buf & POLY_G2)*255;
     }
 
+    std::stringstream ss;
     for (int i=0; i<m_channelBytesLen; i++) {
+        m_channelBytes[i] = 0;
         uint8_t byte = 0;
         for (int j=0; j<8; j++) {
             if (m_symbols[i*8+j]) byte |= 1 << (7-j);
         }
         m_channelBytes[i] = byte;
+        ss << std::setfill('0') << std::setw(2) << std::hex << (unsigned int)m_channelBytes[i];
     }
-
+    LOG_INFO("Encoded: %s", ss.str());
     return 0;
 }
 
