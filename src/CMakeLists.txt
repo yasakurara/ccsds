@@ -4,4 +4,5 @@ add_subdirectory(logging)
 add_library(ccsds SHARED $<TARGET_OBJECTS:logging> 
     TMSender.cpp
     ConvolutionalEncoder.cpp
-    ViterbiDecoder.cpp)
+    ViterbiDecoder.cpp
+    ReedSolomonCoding.cpp)

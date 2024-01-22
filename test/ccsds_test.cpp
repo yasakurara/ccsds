@@ -92,3 +92,26 @@ TEST(ViterbiDecoderTest, CorrectErrors) {
   auto cmp = [](uint8_t *a, uint8_t *b, int len) -> int { return std::memcmp(a, b, len); };
   EXPECT_EQ(cmp(channelBytes, expectedBytes, sizeof(channelBytes)), 0);
 }
+
+#include "ReedSolomonCoding.hpp"
+
+TEST(ReedSolomonCodingTest, AlphaPoly) {
+  ReedSolomonCoding rs;
+  uint8_t bits = rs.GetGFAlphaPolyBits(0);
+  EXPECT_EQ(bits, 0x01);
+
+  bits = rs.GetGFAlphaPolyBits(255);
+  EXPECT_EQ(bits, 0x00);
+
+  bits = rs.GetGFAlphaPolyBits(183);
+  EXPECT_EQ(bits, 0xff);
+
+  bits = rs.GetGFAlphaPolyBits(84);
+  EXPECT_EQ(bits, 0x55); 
+
+  bits = rs.GetGFAlphaPolyBits(85);
+  EXPECT_EQ(bits, 0xaa);
+
+  bits = rs.GetGFAlphaPolyBits(254);
+  EXPECT_EQ(bits, 0xc3);
+}
