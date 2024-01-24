@@ -99,19 +99,38 @@ TEST(ReedSolomonCodingTest, AlphaPoly) {
   ReedSolomonCoding rs;
   uint8_t bits = rs.GetGFAlphaPolyBits(0);
   EXPECT_EQ(bits, 0x01);
-
   bits = rs.GetGFAlphaPolyBits(255);
   EXPECT_EQ(bits, 0x00);
-
   bits = rs.GetGFAlphaPolyBits(183);
   EXPECT_EQ(bits, 0xff);
-
   bits = rs.GetGFAlphaPolyBits(84);
   EXPECT_EQ(bits, 0x55); 
-
   bits = rs.GetGFAlphaPolyBits(85);
   EXPECT_EQ(bits, 0xaa);
-
   bits = rs.GetGFAlphaPolyBits(254);
   EXPECT_EQ(bits, 0xc3);
+
+  uint8_t exponent = rs.GetGFAlphaPolyExponent(0x00);
+  EXPECT_EQ(exponent, 255);
+  exponent = rs.GetGFAlphaPolyExponent(0x01);
+  EXPECT_EQ(exponent, 0);
+  exponent = rs.GetGFAlphaPolyExponent(0xff);
+  EXPECT_EQ(exponent, 183);
+}
+
+TEST(ReedSolomonCodingTest, RSPoly) {
+  ReedSolomonCoding rs;
+  uint8_t exponent = rs.GetRSPolyExponent(0);
+  EXPECT_EQ(exponent, 0);
+  exponent = rs.GetRSPolyExponent(32);
+  EXPECT_EQ(exponent, 0);
+
+  exponent = rs.GetRSPolyExponent(3);
+  EXPECT_EQ(exponent, 66);
+  exponent = rs.GetRSPolyExponent(29);
+  EXPECT_EQ(exponent, 66);
+  exponent = rs.GetRSPolyExponent(13);
+  EXPECT_EQ(exponent, 66);
+  exponent = rs.GetRSPolyExponent(19);
+  EXPECT_EQ(exponent, 66); 
 }

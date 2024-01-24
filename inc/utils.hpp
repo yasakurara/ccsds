@@ -24,3 +24,11 @@ static void init_parity_tab(void){
     parity_tab[i] = cnt & 1;
   }
 }
+
+static int mod255(int x){
+  while (x >= 255) {
+    x -= 255;
+    x = (x >> 8) + (x & 255);
+  }
+  return x;
+}
